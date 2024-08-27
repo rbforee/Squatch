@@ -6,5 +6,10 @@ public interface IGameObject
     float Y {get;set;}
 
     IList<IBehavior> Behaviors {get;set;}
+
+    void Draw();
+    void Update();
+    void Init();
+    void Terminate();
     
 }
