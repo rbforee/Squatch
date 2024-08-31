@@ -22,15 +22,13 @@ class Program
             Y = GameConfiguration.ScreenHeight - 64
         };
 
-
-
         var enemy1 = new EnemyGameObject ();
 
         enemy1.Behaviors.Add
         (
             new Behaviors.MoveBehavior
             {
-                Path = Lib.CreatePath(new Vector2(10, 10), new Vector2(1000, 1000))
+                Path = Lib.CreatePath(new Vector2(10, 10), new Vector2(200, 200))
             }
         );
 
@@ -44,26 +42,50 @@ class Program
             {
                 new Behaviors.MoveBehavior
                 {
-                    Path = Lib.CreatePath(new Vector2(10, 10), new Vector2(1000, 1000))
+                    Path = Lib.CreatePath(new Vector2(10, 10), new Vector2(200, 200))
                 }
             }           
         };
 
         GameConfiguration.GameObjectList.Add(ship);
-        GameConfiguration.GameObjectList.Add(enemy1);
-        GameConfiguration.GameObjectList.Add(enemy2);
+        //GameConfiguration.GameObjectList.Add(enemy1);
+        //GameConfiguration.GameObjectList.Add(enemy2);
 
         while (!Raylib.WindowShouldClose())
         {
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.Black);
 
+            //    
+            // Check collision
+            // remove the objects that collide
+            // TOTO add different types of collision
+            //
+            var removelist = new List<IGameObject>();
+            for(var x = 0; x < GameConfiguration.GameObjectList.Count; x++)
+            {
+                for(var y = x; y < GameConfiguration.GameObjectList.Count;y++)
+                {
+                    if (Lib.CheckCollision(GameConfiguration.GameObjectList[x], GameConfiguration.GameObjectList[y]))
+                    {
+                        removelist.Add(GameConfiguration.GameObjectList[x]);
+                        removelist.Add(GameConfiguration.GameObjectList[y]);
+                    }
+                }
+            }
+
+
+            // foreach(var i in removelist)
+            // {      
+            //     if (GameConfiguration.GameObjectList.Contains(i))          
+            //     {
+            //         Lib.RemoveGameObject(i);
+            //     }
+            // }
+
             for(var i = 0; i< GameConfiguration.GameObjectList.Count; i++)
             {
 
-                //    
-                // Check collision
-                //
                 GameConfiguration.GameObjectList[i].Update();
                 
                 GameConfiguration.GameObjectList[i].Draw();

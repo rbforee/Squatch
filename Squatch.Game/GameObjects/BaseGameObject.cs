@@ -5,8 +5,11 @@ namespace Squatch.Game.GameObjects;
 
 public class BaseGameObject : IGameObject
 {
+    public Guid ID {get;set;}
     public float X { get; set; }
     public float Y { get; set; }
+    public float Height {get;set;}
+    public float Width { get; set; }
     public IList<IBehavior> Behaviors {get;set;} = new List<IBehavior>();
 
     public virtual void Draw() 

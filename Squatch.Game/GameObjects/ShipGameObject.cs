@@ -1,5 +1,6 @@
 using Raylib_cs;
 using System.Numerics;
+using Squatch.Game.Core;
 
 namespace Squatch.Game.GameObjects;
 
@@ -8,7 +9,11 @@ public class ShipGameObject : BaseGameObject
     public Vector2 v1 {get;set;} = new Vector2(32,1);
     public Vector2 v2 {get;set;} = new Vector2(1,64);
     public Vector2 v3 {get;set;} = new Vector2(64,64);
-    public float Velocity {get;set;} = 100.0f;
+    
+    public float MaxVelocity {get;set;} = 1000.0f;
+    public float VelocityX {get;set;} = 0.0f;
+    public float VelocityY {get;set;} = 0.0f;
+    public float Acceleration {get;set;} = 50.0f;
 
     public override void Draw()
     {
@@ -19,21 +24,76 @@ public class ShipGameObject : BaseGameObject
         Raylib.DrawTriangle(tv1, tv2, tv3, Color.SkyBlue);
     }
 
+
+    //
+    //
+    //
     public override void Update()
     {
-        if (Raylib.IsKeyDown(KeyboardKey.Left))
+
+        Raylib.DrawText($"Ship {this.VelocityX}:{this.VelocityY}", 0, 0, 14, Color.White);
+
+        bool IsMoveKeyPressed = false;
+
+        //
+        // update / down
+        //
+        if (Raylib.IsKeyDown(KeyboardKey.Up))
         {
-            X = X - (Velocity * Raylib.GetFrameTime());
+            VelocityY += (Acceleration * -1) * Raylib.GetFrameTime();
+
+            VelocityY = Math.Clamp(VelocityY, MaxVelocity * -1, MaxVelocity);    
+            
+            Y = Y + VelocityY;
+
+            IsMoveKeyPressed = true;
+        }
+        else
+        {
+            if (Raylib.IsKeyDown(KeyboardKey.Down))
+            {
+                VelocityY += Acceleration * Raylib.GetFrameTime();
+
+                VelocityY = Math.Clamp(VelocityY, MaxVelocity * -1, MaxVelocity);    
+                
+                Y = Y + VelocityY;
+
+                IsMoveKeyPressed = true;
+            }            
         }
 
-        if (Raylib.IsKeyDown(KeyboardKey.Right))
+
+        //
+        // left / right
+        //
+        if (Raylib.IsKeyDown(KeyboardKey.Left))
         {
-            X = X + (Velocity * Raylib.GetFrameTime());
+
+            VelocityX += (Acceleration * -1) * Raylib.GetFrameTime();
+
+            VelocityX = Math.Clamp(VelocityX, MaxVelocity * -1, MaxVelocity);    
+            
+            X = X + VelocityX;
+
+            IsMoveKeyPressed = true;
+        }
+        else
+        {
+            if (Raylib.IsKeyDown(KeyboardKey.Right))
+            {
+                VelocityX += Acceleration * Raylib.GetFrameTime();
+
+                VelocityX = Math.Clamp(VelocityX, MaxVelocity * -1, MaxVelocity);    
+                
+                X = X + VelocityX;
+
+                IsMoveKeyPressed = true;
+            }
         }
 
         if (Raylib.IsKeyPressed(KeyboardKey.Space))
         {
-            GameConfiguration.GameObjectList.Add
+            Lib.AddGameObject
             (
                 new BulletGameObject
                 { 
@@ -41,6 +101,38 @@ public class ShipGameObject : BaseGameObject
                     Y = v1.Y + Y
                 }
             );
+        }
+
+        //
+        // decellerate X
+        //
+        if (!IsMoveKeyPressed && VelocityX != 0)
+        {
+            var i = 0f;
+ 
+            if (VelocityX > 0) i = -1;
+ 
+            if (VelocityX < 0) i = 1;
+
+            VelocityX = VelocityX + (Acceleration * i * Raylib.GetFrameTime());
+            
+            X = X + VelocityX;
+        }
+
+        //
+        // decellerate Y
+        //
+        if (!IsMoveKeyPressed && VelocityY != 0)
+        {
+            var i = 0f;
+ 
+            if (VelocityY > 0) i = -1;
+ 
+            if (VelocityY < 0) i = 1;
+
+            VelocityY = VelocityY + (Acceleration * i * Raylib.GetFrameTime());
+            
+            Y = Y + VelocityY;
         }
 
     }
