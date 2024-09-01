@@ -24,6 +24,7 @@ class Program
 
         var enemy1 = new EnemyGameObject ();
 
+        /*
         enemy1.Behaviors.Add
         (
             new Behaviors.MoveBehavior
@@ -31,8 +32,9 @@ class Program
                 Path = Lib.CreatePath(new Vector2(10, 10), new Vector2(200, 200))
             }
         );
+        */
 
-
+/*
         var enemy2 = new EnemyGameObject 
         {
             X = 200,  
@@ -46,9 +48,10 @@ class Program
                 }
             }           
         };
+*/
 
         GameConfiguration.GameObjectList.Add(ship);
-        //GameConfiguration.GameObjectList.Add(enemy1);
+        GameConfiguration.GameObjectList.Add(enemy1);
         //GameConfiguration.GameObjectList.Add(enemy2);
 
         while (!Raylib.WindowShouldClose())
@@ -68,8 +71,11 @@ class Program
                 {
                     if (Lib.CheckCollision(GameConfiguration.GameObjectList[x], GameConfiguration.GameObjectList[y]))
                     {
+                        Raylib.DrawText($"Collision", 0, 14, 14, Color.White);
+
                         removelist.Add(GameConfiguration.GameObjectList[x]);
                         removelist.Add(GameConfiguration.GameObjectList[y]);
+                        
                     }
                 }
             }

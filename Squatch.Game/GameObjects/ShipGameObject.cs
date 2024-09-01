@@ -10,7 +10,7 @@ public class ShipGameObject : BaseGameObject
     public Vector2 v2 {get;set;} = new Vector2(1,64);
     public Vector2 v3 {get;set;} = new Vector2(64,64);
     
-    public float MaxVelocity {get;set;} = 1000.0f;
+    public float MaxVelocity {get;set;} = 100.0f;
     public float VelocityX {get;set;} = 0.0f;
     public float VelocityY {get;set;} = 0.0f;
     public float Acceleration {get;set;} = 50.0f;
@@ -22,6 +22,8 @@ public class ShipGameObject : BaseGameObject
         var tv3 = new Vector2(v3.X + X, v3.Y + Y);
 
         Raylib.DrawTriangle(tv1, tv2, tv3, Color.SkyBlue);
+
+        Height = 64; Width = 64;
     }
 
 
@@ -31,7 +33,9 @@ public class ShipGameObject : BaseGameObject
     public override void Update()
     {
 
-        Raylib.DrawText($"Ship {this.VelocityX}:{this.VelocityY}", 0, 0, 14, Color.White);
+
+        Raylib.DrawText($"Ship => coord {X}:{Y} {this.VelocityX.ToString("0.00")}:{this.VelocityY.ToString("0.00")}", 0, 0, 14, Color.White);
+
 
         bool IsMoveKeyPressed = false;
 
@@ -114,9 +118,17 @@ public class ShipGameObject : BaseGameObject
  
             if (VelocityX < 0) i = 1;
 
-            VelocityX = VelocityX + (Acceleration * i * Raylib.GetFrameTime());
             
-            X = X + VelocityX;
+            if (Math.Abs(VelocityX) < Acceleration * Raylib.GetFrameTime() )
+            {
+                VelocityX = 0;
+            }
+            else
+            {
+                VelocityX = VelocityX + (Acceleration * i * Raylib.GetFrameTime());
+            }
+
+            X = X + VelocityX;                        
         }
 
         //
@@ -131,9 +143,20 @@ public class ShipGameObject : BaseGameObject
             if (VelocityY < 0) i = 1;
 
             VelocityY = VelocityY + (Acceleration * i * Raylib.GetFrameTime());
-            
+
+             
+            if (Math.Abs(VelocityY) < Acceleration)
+            {
+                VelocityY = 0;
+            }
+           
             Y = Y + VelocityY;
         }
+
+
+        // clamp the value to the screen height and width
+        X = Lib.Clamp(X, 0, GameConfiguration.ScreenWidth - Width);
+        Y = Lib.Clamp(Y, 0, GameConfiguration.ScreenHeight);
 
     }
 }
