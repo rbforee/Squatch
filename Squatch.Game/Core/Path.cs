@@ -4,5 +4,5 @@ namespace Squatch.Game.Core;
 
 public class Path
 {
-    public IList<Vector2> Points {get;set;}
+    public IList<Point> Points {get;set;}
 }

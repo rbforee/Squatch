@@ -4,6 +4,7 @@ namespace Squatch.Game;
 
 public class GameConfiguration
 {
+    public static uint CurrentObjectID {get;set;}
     public static List<IGameObject> GameObjectList;
     public static int ScreenHeight {get;set;} = 768;
     public static int ScreenWidth {get;set;} = 1024;

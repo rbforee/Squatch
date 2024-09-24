@@ -1,3 +1,4 @@
+using Squatch.Game.Core;
 using Raylib_cs;
 using System.Numerics;
 
@@ -7,10 +8,14 @@ public class EnemyGameObject : BaseGameObject
 {
     public override void Draw()
     {
-        var v1 = new Vector2(X + 10, Y + 10);
-        var v2 = new Vector2(X + 50, Y + 50);
+        Raylib.DrawText("hell o world", 1, 1, 20, Color.White);
+        var v1 = new Vector2 (10, 10); //Point(10,10).ToVector2();
+        var v2 = new Vector2 (100,100); //Point(100,100).ToVector2();
 
-        Raylib.DrawRectangleV(v1, v2, Color.White);
-        
+        Raylib.DrawRectangleV
+        (   new Point(10,10).ToVector2(), 
+            new Point(64,64).ToVector2(),
+            Color.White
+        );        
     }
 }

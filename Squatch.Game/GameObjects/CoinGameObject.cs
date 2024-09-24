@@ -3,8 +3,15 @@ using Raylib_cs;
 
 namespace Squatch.Game.GameObjects;
 
-public class BulletGameObject : BaseGameObject
+public class CoinGameObject : BaseGameObject
 {
+    
+    public override void Init()
+    {
+
+    }
+
+
     public override void Draw()
     {
 

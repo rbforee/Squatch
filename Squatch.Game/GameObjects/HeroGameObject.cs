@@ -4,7 +4,7 @@ using Squatch.Game.Core;
 
 namespace Squatch.Game.GameObjects;
 
-public class ShipGameObject : BaseGameObject
+public class HeroGameObject : BaseGameObject
 {
     public Point v1 {get;set;} = new Point(32,1);
     public Point v2 {get;set;} = new Point(1,64);
@@ -23,7 +23,8 @@ public class ShipGameObject : BaseGameObject
 
         Raylib.DrawTriangle(tv1, tv2, tv3, Color.SkyBlue);
 
-        Position.Y = 64; Position.X = 64;
+        Size.X = 64; 
+        Size.Y = 64;
     }
 
 
@@ -32,8 +33,7 @@ public class ShipGameObject : BaseGameObject
     //
     public override void Update()
     {
-
-
+        
         Raylib.DrawText($"Ship => coord {Position.X}:{Position.Y} {this.VelocityX.ToString("0.00")}:{this.VelocityY.ToString("0.00")}", 0, 0, 14, Color.White);
 
 
@@ -101,7 +101,7 @@ public class ShipGameObject : BaseGameObject
             (
                 new BulletGameObject
                 { 
-                    Position = Lib.AddPoints(v1, Position)
+                    Position = Lib.AddPoints(v1, Position) 
                 }
             );
         }
@@ -153,8 +153,8 @@ public class ShipGameObject : BaseGameObject
         }
 
         // clamp the value to the screen height and width
-        this.Position.X = Lib.Clamp(this.Position.X, 0, GameConfiguration.ScreenWidth - this.Size.X);
-        this.Position.Y = Lib.Clamp(this.Position.Y, 0, GameConfiguration.ScreenHeight);
+        Position.X = Lib.Clamp(Position.X, 0, GameConfiguration.ScreenWidth - Size.X);
+        Position.Y = Lib.Clamp(Position.Y, 0, GameConfiguration.ScreenHeight);
 
     }
 }

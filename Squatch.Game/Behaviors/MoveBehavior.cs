@@ -18,8 +18,8 @@ public class MoveBehavior : Core.IBehavior
     {
         var i = Raylib.GetFrameTime();
 
-        var newX = GameObject.X + (Velocity * i * StateX);
-        var newY = GameObject.Y + (Velocity * i * StateY);
+        var newX = GameObject.Position.X + (Velocity * i * StateX);
+        var newY = GameObject.Position.Y + (Velocity * i * StateY);
 
         if (newX > GameConfiguration.ScreenWidth)
         {
@@ -45,8 +45,7 @@ public class MoveBehavior : Core.IBehavior
             newY = 1;
         }
 
-        GameObject.X = newX;
-        GameObject.Y = newY;
+        GameObject.Position = new Point(newX, newY);
     }
 
     public void Draw()
